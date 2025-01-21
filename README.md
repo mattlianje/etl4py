@@ -45,30 +45,23 @@ The base abstraction. All nodes, regardless of type, can be:
 - Grouped with `&` for parallel operations
 - Connected with `>>` to form pipelines
 
-Three semantic types that help teams share a common language:
-
+Three semantic type aliases that help teams share a common language:
 - `Extract[-In, +Out]`
 Conventionally used to start pipelines. Create parameter-less extracts: `Extract(lambda _: 5)`
 
 - `Transform[-In, +Out]`
 Conventionally used for intermediate transformations
 
-3. `Load[-In, +Out]`
+- `Load[-In, +Out]`
 Conventionally used for pipeline endpoints
 
 ### Of note...
 
-* At its core, **etl4py** just wraps (more-or-less) pure functions (this is Python after all). The value comes from simple, powerful additions:
-  - Composable nodes (`|` for composition, `&` for parallel ops)
-  - Built-in safety nets (retries, failure handling)
-  - Type-safe pipelines that "just fit together"
-  - No dependencies, no complex frameworks
+* At its core, **etl4py** just wraps pure(ish) functions (this is Python after all) ... with a few added niceties like chaining, composition,
+keeping infrastructure concerns separate from your dataflows (Reader), and shorthand for grouping parallelizable tasks.
 
-* We've all seen it: ETL codebases that grow into unmaintainable tangles of: Framework-specific code that's hard to test, database logic mixed with business rules,
+* The problem is ETL/OLAP codebases grow into unmaintainable tangles of: framework-specific code that's hard to test, database logic mixed with business rules,
 and crazy logic doing the splits between your scheduler and domain logic
-
-* **etl4py** is a tiny DSL that brings sanity back. Some small constraints can liberate (like lego blocks). It forces you to think in pure functions,
-makes composition natural and type-safe, keeps infrastructure concerns separate from your dataflows (Reader),
 
 The goal isn't to replace your ETL framework - it's to give you a clean, type-safe way to express data flows that your whole team can understand.
 
