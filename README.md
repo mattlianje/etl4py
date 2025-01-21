@@ -13,7 +13,7 @@ double:       Transform[int, int] = Transform(lambda x: x * 2)
 add_10:       Transform[int, int] = Transform(lambda x: x + 10)
 
 console_load: Load[int, None] = Load(lambda x: print(f"Result: {x}"))
-db_load: Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
+db_load:      Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
 
 # Create a pipeline by stitching Nodes
 pipeline: Pipeline[None, None] = \
