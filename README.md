@@ -8,9 +8,9 @@ A lightweight, zero-dependency library for writing type-safe data flows in Pytho
 from etl4py import *
 
 # Define your building blocks with type hints
-five_extract: Extract[None, int] = Extract(lambda _: 5)
-double: Transform[int, int] = Transform(lambda x: x * 2)
-add_10: Transform[int, int] = Transform(lambda x: x + 10)
+five_extract: Extract[None, int]  = Extract(lambda _: 5)
+double:       Transform[int, int] = Transform(lambda x: x * 2)
+add_10:       Transform[int, int] = Transform(lambda x: x + 10)
 
 console_load: Load[int, None] = Load(lambda x: print(f"Result: {x}"))
 db_load: Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
