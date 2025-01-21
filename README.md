@@ -117,3 +117,6 @@ fetch_user = Reader[ApiConfig, Node[str, str]](
 # Use with config
 node = fetch_user.run(api_config)
 ```
+
+## Inspiration
+- This is a port of my [etl4s](https://github.com/mattlianje/etl4s) Scala library.
