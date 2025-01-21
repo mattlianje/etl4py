@@ -33,13 +33,13 @@ Saved to DB: 20
 
 **etl4py** has two fundamental building blocks:
 
-### `Pipeline[-In, +Out]`
+#### `Pipeline[-In, +Out]`
 A complete pipeline composed of nodes chained with `>>`. Takes type `In` and produces `Out` when run:
 - Use `unsafe_run()` for "run-or-throw" behavior
 - Fully type-safe: won't compile if types don't match
 - Composable with other pipelines
 
-### `Node[-In, +Out]`
+#### `Node[-In, +Out]`
 The base abstraction. All nodes, regardless of type, can be:
 - Composed with `|` to create new nodes
 - Grouped with `&` for parallel operations
@@ -47,20 +47,14 @@ The base abstraction. All nodes, regardless of type, can be:
 
 Three semantic types that help teams share a common language:
 
-1. `Extract[-In, +Out]`
-   - Conventionally used to start pipelines
-   - Create parameter-less extracts: `Extract(lambda _: 5)`
-   - Type hint as: `Extract[None, int]` for pure values
+- `Extract[-In, +Out]`
+Conventionally used to start pipelines. Create parameter-less extracts: `Extract(lambda _: 5)`
 
-2. `Transform[-In, +Out]`
-   - Conventionally used for intermediate transformations
-   - Compose multiple transforms left to right: `t1 | t2 | t3`
-   - Group parallel transforms: `t1 & t2 & t3`
+- `Transform[-In, +Out]`
+Conventionally used for intermediate transformations
 
 3. `Load[-In, +Out]`
-   - Conventionally used for pipeline endpoints
-   - Chain loads like any node: `load1 | load2`
-   - Common to group multiple loads: `load1 & load2 & load3`
+Conventionally used for pipeline endpoints
 
 ### Of note...
 
@@ -70,20 +64,11 @@ Three semantic types that help teams share a common language:
   - Type-safe pipelines that "just fit together"
   - No dependencies, no complex frameworks
 
-* We've all seen it: ETL codebases that grow into unmaintainable tangles of:
-  - Framework-specific code that's hard to test
-  - Database logic mixed with business rules
-  - Retry logic duplicated everywhere
-  - Types that don't quite match
-  - Pipelines that are impossible to reuse
-  - Crazy logic doing the splits between your scheduler and domain logic
+* We've all seen it: ETL codebases that grow into unmaintainable tangles of: Framework-specific code that's hard to test, database logic mixed with business rules,
+and crazy logic doing the splits between your scheduler and domain logic
 
-* **etl4py** is a tiny DSL that brings sanity back:
-  - Forces you to think in pure functions
-  - Makes composition natural and type-safe
-  - Keeps infrastructure concerns separate from your dataflows
-  - Makes building blocks reusable
-  - Shows that ETL/OLAP can be elegant
+* **etl4py** is a tiny DSL that brings sanity back. Some small constraints can liberate (like lego blocks). It forces you to think in pure functions,
+makes composition natural and type-safe, keeps infrastructure concerns separate from your dataflows (Reader),
 
 The goal isn't to replace your ETL framework - it's to give you a clean, type-safe way to express data flows that your whole team can understand.
 
