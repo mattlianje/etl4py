@@ -2,7 +2,7 @@
 
 **Powerful, whiteboard-style ETL**
 
-A lightweight, zero-dependency library for writing beautiful, type-safe data flows in Python 3.7+:
+A lightweight, zero-dependency library for writing beautiful ✨🍰, type-safe data flows in Python 3.7+:
 
 ```python
 from etl4py import *
