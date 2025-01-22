@@ -268,10 +268,11 @@ config = TrainingConfig(
         epochs=5
 )
 
-# Create and run pipeline
-pipeline = create_training_pipeline(config)
+# Create pipeline
+pipeline: Pipeline[None, nn.Module] = create_training_pipeline(config)
 train_loader = None
 
+# Run pipeline
 model = pipeline.unsafe_run(None)
 print("Training complete! Model saved to model_checkpoint.pt")
 ```
@@ -343,7 +344,7 @@ config = SparkConfig(
 )
 
 # Create and run pipeline
-spark_pipeline = create_spark_pipeline(config)
+spark_pipeline: Pipeline[None, None] = create_spark_pipeline(config)
 spark_pipeline.unsafe_run(None)
 ```
 
