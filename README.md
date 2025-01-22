@@ -34,7 +34,7 @@ Saved to DB: 20
 
 ## Core Concepts
 
-**etl4py** has two fundamental building blocks:
+**etl4py** has two building blocks:
 
 #### `Pipeline[-In, +Out]`
 A complete pipeline composed of nodes chained with `>>`. Takes type `In` and produces `Out` when run:
