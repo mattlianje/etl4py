@@ -36,8 +36,8 @@ Saved to DB: 20
 #### `Pipeline[-In, +Out]`
 A complete pipeline composed of nodes chained with `>>`. Takes type `In` and produces `Out` when run:
 - Use `unsafe_run()` for "run-or-throw" behavior
-- Fully type-safe: won't compile if types don't match
-- Composable with other pipelines
+- Fully type-safe: won't compile if types don't match (use [mypy](https://github.com/python/mypy))
+- Chain pipelines with `>>`
 
 #### `Node[-In, +Out]`
 The base abstraction. All nodes, regardless of type, can be:
@@ -47,7 +47,7 @@ The base abstraction. All nodes, regardless of type, can be:
 
 Three semantic type aliases that help teams share a common language:
 - `Extract[-In, +Out]`
-Conventionally used to start pipelines. Create parameter-less extracts: `Extract(lambda _: 5)`
+Conventionally used to start pipelines. Create parameter-less extracts that purely produce values like this: `Extract(lambda _: 5)`
 
 - `Transform[-In, +Out]`
 Conventionally used for intermediate transformations
@@ -56,14 +56,10 @@ Conventionally used for intermediate transformations
 Conventionally used for pipeline endpoints
 
 ### Of note...
-
-* At its core, **etl4py** just wraps pure(ish) functions (this is Python after all) ... with a few added niceties like chaining, composition,
+- At its core, **etl4py** just wraps pure*ish* (this is Python after all, not in a bad way) functions ... with a few added niceties like chaining, composition,
 keeping infrastructure concerns separate from your dataflows (Reader), and shorthand for grouping parallelizable tasks.
-
-* The problem is ETL/OLAP codebases grow into unmaintainable tangles of: framework-specific code that's hard to test, database logic mixed with business rules,
-and crazy logic doing the splits between your scheduler and domain logic
-
-The goal isn't to replace your ETL framework - it's to give you a clean, type-safe way to express data flows that your whole team can understand.
+- Chaotic, framework/infra-coupled ETL codebases that grow without an imposed discipline drive dev-teams and data-orgs to their knees.
+- **etl4py** is a little DSL to enforce discipline, type-safety and re-use of pure functions - and see [functional ETL](https://maximebeauchemin.medium.com/functional-data-engineering-a-modern-paradigm-for-batch-data-processing-2327ec32c42a) for what it is... and could be.
 
 
 ### Compose Nodes
