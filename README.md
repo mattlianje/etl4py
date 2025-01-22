@@ -12,12 +12,15 @@ five_extract: Extract[None, int]  = Extract(lambda _: 5)
 double:       Transform[int, int] = Transform(lambda x: x * 2)
 add_10:       Transform[int, int] = Transform(lambda x: x + 10)
 
-console_load: Load[int, None] = Load(lambda x: print(f"Result: {x}"))
-db_load:      Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
+# Compose nodes with `|`
+double_then_add_10:  Transform[int, int] = double | add_10
+
+console_load:        Load[int, None] = Load(lambda x: print(f"Result: {x}"))
+db_load:             Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
 
 # Create a pipeline by stitching Nodes
 pipeline: Pipeline[None, None] = \
-        five_extract >> double >> add_10 >> (console_load & db_load)
+        five_extract >> double_then_add_10 >> (console_load & db_load)
 
 # Run at end of World
 pipeline.unsafe_run()
