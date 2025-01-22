@@ -18,7 +18,7 @@ double_then_add_10:  Transform[int, int] = double | add_10
 console_load:        Load[int, None] = Load(lambda x: print(f"Result: {x}"))
 db_load:             Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
 
-# Create a pipeline by stitching Nodes
+# Create a pipeline by stitching Nodes with `>>`
 pipeline: Pipeline[None, None] = \
         five_extract >> double_then_add_10 >> (console_load & db_load)
 
