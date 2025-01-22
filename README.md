@@ -120,7 +120,7 @@ def create_validator(predicate: Callable[[T], bool], error_msg: str) -> Node[T, 
 
 # Composable logging pattern
 def with_logging(node: Node[T, U], logger: Logger) -> Node[T, U]:
-    return Transform(lambda x: logger.info(f"Input: {x}")) >> \
+    return Transform(lambda x: logger.info(f"Input: {x}") or x) >> \
            node >> \
            Transform(lambda x: logger.info(f"Output: {x}") or x)
 ```
