@@ -87,7 +87,7 @@ pipeline = stats >> process_results
 ```
 
 ### Error Handling
-Handle failures gracefully:
+Handle failures gracefully using `on_failure` on any Node of Pipeline:
 ```python
 safe_extract = risky_extract.on_failure(
     lambda error: f"Failed: {error}"
@@ -95,7 +95,7 @@ safe_extract = risky_extract.on_failure(
 ```
 
 ### Automatic Retries
-Add retry capability to any node or pipeline:
+Add retry capability to any Node or Pipeline:
 ```python
 from etl4py import RetryConfig
 
