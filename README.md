@@ -76,7 +76,7 @@ keeping infrastructure concerns separate from your dataflows (Reader), and short
 
 
 ### Compose Nodes
-Use `|` to create reusable nodes:
+Use `|` to do reverse composition of nodes (↦). Think of it as "andThen":
 ```python
 from etl4py import *
 
