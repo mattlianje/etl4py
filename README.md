@@ -37,7 +37,7 @@ Saved to DB: 20
 ```
 pip install etl4py
 ```
-Or fire up a REPL and try it now:
+Or try it in your REPL:
 ```
 python -i <(curl -sL https://raw.githubusercontent.com/mattlianje/etl4py/master/etl4py.py)
 ```
