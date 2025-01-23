@@ -6,8 +6,9 @@
 
 **Powerful, whiteboard-style ETL**
 
-A lightweight, zero-dependency library for writing beautiful ✨🍰, type-safe data flows in Python 3.7+ ... with **_any_** 
-framework - from your local-dev, to massive multicore clusters.
+A lightweight, zero-dependency library for writing beautiful ✨🍰, type-safe data flows in Python 3.7+
+
+Works with **_any_** framework, **_any_** time, **_any_** place. From raspberry-pi, to massive multicore clusters.
 
 ## Features
 - Type-safe pipelines with full mypy support
