@@ -100,8 +100,7 @@ def risky_operation(data: Dict) -> str:
 resilient_transform = Transform(risky_operation).with_retry(
     RetryConfig(
         max_attempts=3,
-        delay_ms=100,
-        backoff_factor=2
+        delay_ms=100
     )
 )
 
@@ -166,116 +165,6 @@ result = pipeline.unsafe_run("user_123")
 ```
 
 ## More examples
-#### Use etl4py to structure ML workflows
-```python
-from etl4py import *
-from dataclasses import dataclass
-from typing import Tuple
-import torch
-from torch import nn, optim
-from torch.utils.data import Dataset, DataLoader
-import numpy as np
-
-# Simple synthetic dataset
-class SyntheticDataset(Dataset):
-    def __init__(self, num_samples=1000):
-        self.data = torch.randn(num_samples, 10)
-        self.labels = torch.randint(0, 2, (num_samples,))
-    
-    def __len__(self):
-        return len(self.data)
-    
-    def __getitem__(self, idx):
-        return self.data[idx], self.labels[idx]
-
-# Simple model
-class SimpleModel(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.layers = nn.Sequential(
-            nn.Linear(10, 5),
-            nn.ReLU(),
-            nn.Linear(5, 2)
-        )
-    
-    def forward(self, x):
-        return self.layers(x)
-
-@dataclass
-class TrainingConfig:
-    batch_size: int
-    learning_rate: float
-    epochs: int
-    device: str = "cuda" if torch.cuda.is_available() else "cpu"
-
-def create_training_pipeline(config: TrainingConfig) -> Pipeline[None, nn.Module]:
-    # Data loading
-    load_dataset = Extract(lambda _: SyntheticDataset())
-    create_loader = Transform(
-        lambda dataset: DataLoader(dataset, batch_size=config.batch_size)
-    )
-    
-    def setup_model(_):
-        model = SimpleModel().to(config.device)
-        optimizer = optim.Adam(model.parameters(), lr=config.learning_rate)
-        criterion = nn.CrossEntropyLoss()
-        return model, optimizer, criterion
-    
-    init_training = Transform(setup_model)
-    
-    def train_model(state: Tuple[nn.Module, optim.Optimizer, nn.Module]) -> nn.Module:
-        model, optimizer, criterion = state
-        
-        for epoch in range(config.epochs):
-            model.train()
-            running_loss = 0.0
-            
-            for i, (inputs, labels) in enumerate(train_loader):
-                inputs = inputs.to(config.device)
-                labels = labels.to(config.device)
-                
-                optimizer.zero_grad()
-                outputs = model(inputs)
-                loss = criterion(outputs, labels)
-                loss.backward()
-                optimizer.step()
-                
-                running_loss += loss.item()
-                if i % 100 == 99:
-                    print(f'Epoch {epoch + 1}, Batch {i + 1}, Loss: {running_loss / 100:.3f}')
-                    running_loss = 0.0
-                    
-        return model
-    
-    train = Transform(train_model)
-
-    save_model = Load(lambda model: torch.save(
-        model.state_dict(), 
-        'model_checkpoint.pt'
-    ))
-    
-    return (
-        load_dataset >>
-        create_loader >>
-        init_training >>
-        train >>
-        save_model
-    )
-
-config = TrainingConfig(
-        batch_size=32,
-        learning_rate=0.001,
-        epochs=5
-)
-
-# Create pipeline
-pipeline: Pipeline[None, nn.Module] = create_training_pipeline(config)
-train_loader = None
-
-# Run pipeline
-model = pipeline.unsafe_run(None)
-print("Training complete! Model saved to model_checkpoint.pt")
-```
 
 #### Use etl4py to structure your PySpark apps
 ```python
