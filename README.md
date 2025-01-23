@@ -6,45 +6,7 @@
 
 **Powerful, whiteboard-style ETL**
 
-A lightweight, zero-dependency library for writing beautiful ✨🍰, type-safe data flows in Python 3.7+:
-
-```python
-from etl4py import *
-
-# Define your building blocks
-five_extract: Extract[None, int]  = Extract(lambda _: 5)
-double:       Transform[int, int] = Transform(lambda x: x * 2)
-add_10:       Transform[int, int] = Transform(lambda x: x + 10)
-
-attempts = 0
-def risky_transform(x: int) -> int:
-   global attempts; attempts += 1
-   if attempts <= 2: raise RuntimeError(f"Failed {attempts}")
-   return x
-
-# Compose nodes with `|`
-double_then_add_10: Transform[int, int] = double | add_10
-
-# Add retries/failure handling
-risky_node:   Transform[int, int] = Transform(risky_transform)\
-                                    .with_retry(RetryConfig(max_attempts=3, delay_ms=100))
-
-console_load: Load[int, None] = Load(lambda x: print(f"Result: {x}"))
-db_load:      Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
-
-# Stitch your pipline with >>
-pipeline: Pipeline[None, None] = \
-     five_extract >> double_then_add_10 >> risky_node >> (console_load & db_load)
-
-# Run your pipeline at the end of the World
-pipeline.unsafe_run()
-```
-
-This prints:
-```
-Result: 20
-Saved to DB: 20
-```
+A lightweight, zero-dependency library for writing beautiful ✨🍰, type-safe data flows in Python 3.7+
 
 ## Features
 - Type-safe pipelines with full mypy support
