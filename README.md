@@ -7,22 +7,32 @@ A lightweight, zero-dependency library for writing beautiful ✨🍰, type-safe 
 ```python
 from etl4py import *
 
-# Define your building blocks with type hints
+# Define your building blocks
 five_extract: Extract[None, int]  = Extract(lambda _: 5)
 double:       Transform[int, int] = Transform(lambda x: x * 2)
 add_10:       Transform[int, int] = Transform(lambda x: x + 10)
 
+attempts = 0
+def risky_transform(x: int) -> int:
+   global attempts; attempts += 1
+   if attempts <= 2: raise RuntimeError(f"Failed {attempts}")
+   return x
+
 # Compose nodes with `|`
-double_then_add_10:  Transform[int, int] = double | add_10
+double_then_add_10: Transform[int, int] = double | add_10
 
-console_load:        Load[int, None] = Load(lambda x: print(f"Result: {x}"))
-db_load:             Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
+# Add retries/failure handling
+risky_node: Transform[int, int] = Transform(risky_transform)\
+                                    .with_retry(RetryConfig(max_attempts=3, delay_ms=100))
 
-# Create a pipeline by stitching Nodes with `>>`
+console_load: Load[int, None] = Load(lambda x: print(f"Result: {x}"))
+db_load:      Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
+
+# Stitch your pipline with >>
 pipeline: Pipeline[None, None] = \
-        five_extract >> double_then_add_10 >> (console_load & db_load)
+     five_extract >> double_then_add_10 >> risky_node >> (console_load & db_load)
 
-# Run at end of World
+# unsafe_run at end of World
 pipeline.unsafe_run()
 ```
 
