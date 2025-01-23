@@ -204,10 +204,12 @@ fetch_posts = Reader[ApiConfig, Node[str, List[Dict]]](
     )
 )
 
-config = ApiConfig(url="https://api.example.com", api_key="secret123")
-pipeline = (fetch_user.run(config) & fetch_posts.run(config)) >> Transform(
-    lambda data: {"user": data[0], "posts": data[1]}
+merge_data: Transform[Tuple[Dict, List[Dict]], Dict] = Transform(
+   lambda data: {"user": data[0], "posts": data[1]}
 )
+
+config = ApiConfig(url="https://api.example.com", api_key="secret123")
+pipeline = (fetch_user.run(config) & fetch_posts.run(config)) >> merge_data
 
 result = pipeline.unsafe_run("user_123")
 ```
