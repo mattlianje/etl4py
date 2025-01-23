@@ -77,7 +77,7 @@ pipeline = Pipeline(
 pipeline.unsafe_run(42)  # Prints hash of "ID_42"
 ```
 
-## Chain pipelines
+### Chain pipelines
 Chain pipelines with `>>`
 ```python
 from etl4py import *
