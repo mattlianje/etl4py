@@ -101,37 +101,51 @@ Handle failures gracefully using `with_retry` or `on_failure` on any Node of Pip
 ```python
 from etl4py import *
 
-def risky_operation(data: Dict) -> str:
-    if random.random() < 0.5:
-        raise RuntimeError("Random failure")
-    return json.dumps(data)
+def always_fails(_):
+   raise RuntimeError("I never work!")
 
-# Add retry with backoff
-resilient_transform = Transform(risky_operation).with_retry(
-    RetryConfig(
-        max_attempts=3,
-        delay_ms=100
-    )
+pipeline = (
+   Transform(lambda x: {"value": x})
+   >> Transform(always_fails)
+   >> Load(lambda x: print(f"Result: {x}"))
+).with_retry(
+   RetryConfig(max_attempts=3, delay_ms=100)
+).on_failure(
+   lambda err: "{'status': 'failed'}"
 )
 
-# Add fallback handling
-safe_transform = resilient_transform.on_failure(
-    lambda error: "{'status': 'failed'}"
-)
+pipeline.unsafe_run(42)  # Will always hit fallback after 3 retries
 ```
 
 ### Re-usable patterns
 Create compositional and re-usable patterns:
 ```python
-# Generic validation node
-def create_validator(predicate: Callable[[T], bool], error_msg: str) -> Node[T, T]:
-    return Transform(lambda x: x if predicate(x) else throw(ValueError(error_msg)))
+from etl4py import *
+import logging
 
-# Composable logging pattern
+# Re-usuable + composable logging pattern
 def with_logging(node: Node[T, U], logger: Logger) -> Node[T, U]:
-    return Transform(lambda x: logger.info(f"Input: {x}") or x) >> \
-           node >> \
-           Transform(lambda x: logger.info(f"Output: {x}") or x)
+   return Transform(lambda x: logger.info(f"Input: {x}") or x) >> \
+          node >> \
+          Transform(lambda x: logger.info(f"Output: {x}") or x)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger()
+
+# Re-usable validator
+def my_validator(x):
+   if x <= 0:
+       raise ValueError("Must be positive")
+   return x
+
+pipeline = (
+   with_logging(Transform(my_validator), logger)
+   >> Transform(lambda x: x * 2) 
+   >> Load(lambda x: print(f"Result: {x}"))
+).with_retry(RetryConfig(max_attempts=2))
+
+pipeline.unsafe_run(25)  # Logs validation input/output, prints Result: 50
+pipeline.unsafe_run(-1)  # Logs validation attempt, raises ValueError
 ```
 
 ### Config-Driven Pipelines
