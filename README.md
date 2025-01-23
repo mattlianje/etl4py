@@ -69,7 +69,7 @@ Conventionally used for intermediate transformations
 Conventionally used for pipeline endpoints
 
 ### Of note...
-- At its core, **etl4py** just wraps pure*ish* (this is Python after all, not in a bad way) functions ... with a few added niceties like chaining, composition,
+- At its core, **etl4py** just wraps pure-*ish* (this is Python after all, not in a bad way) functions ... with a few added niceties like chaining, composition,
 keeping infrastructure concerns separate from your dataflows (Reader), and shorthand for grouping parallelizable tasks.
 - Chaotic, framework/infra-coupled ETL codebases that grow without an imposed discipline drive dev-teams and data-orgs to their knees.
 - **etl4py** is a little DSL to enforce discipline, type-safety and re-use of pure functions - and see [functional ETL](https://maximebeauchemin.medium.com/functional-data-engineering-a-modern-paradigm-for-batch-data-processing-2327ec32c42a) for what it is... and could be.
