@@ -32,6 +32,16 @@ Result: 20
 Saved to DB: 20
 ```
 
+## Get started
+**etl4py** is on PyPi:
+```
+pip install etl4py
+```
+Or fire up a REPL and try it now:
+```
+python -i <(curl -sL https://raw.githubusercontent.com/mattlianje/etl4py/master/etl4py.py)
+```
+
 ## Core Concepts
 
 **etl4py** has two building blocks:
