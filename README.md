@@ -14,7 +14,8 @@ with **_any_** framework, **_any_** place. From raspberry-pi, to massive multico
 - Zero-dependency, single-file lib - drop **etl4py.py** into any project like a header file
 - Effortless task grouping with & operator
 - Built-in retry handling and error recovery
-- Chain pipelines composition with >>
+- Group tasks with `&`
+- Chain pipelines/nodes with `>>`
 
 ## Get started
 **etl4py** is on PyPi:
