@@ -32,7 +32,7 @@ db_load:      Load[int, None] = Load(lambda x: print(f"Saved to DB: {x}"))
 pipeline: Pipeline[None, None] = \
      five_extract >> double_then_add_10 >> risky_node >> (console_load & db_load)
 
-# unsafe_run at end of World
+# Run your pipeline at the end of the World
 pipeline.unsafe_run()
 ```
 
@@ -101,6 +101,22 @@ pipeline = Pipeline(
 ) >> Load(lambda x: print(f"Hash: {x}"))
 
 pipeline.unsafe_run(42)  # Prints hash of "ID_42"
+```
+
+## Chain pipelines
+Chain pipelines with `>>`
+```python
+from etl4py import *
+
+# Pipeline 1: Double then add 5
+p1: Pipeline[int, int] = Transform(lambda x: x * 2) >> Transform(lambda x: x + 5)
+
+# Pipeline 2: Triple then subtract 2
+p2: Pipeline[int, int] = Transform(lambda x: x * 3) >> Transform(lambda x: x - 2)
+
+# Stiched pipeline
+pipeline = p1 >> p2 >> Load(lambda x: print(f"Result: {x}"))
+pipeline.unsafe_run(5)  # Result: 43
 ```
 
 ### Parallel Operations
