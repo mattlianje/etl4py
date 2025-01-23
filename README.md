@@ -22,7 +22,7 @@ def risky_transform(x: int) -> int:
 double_then_add_10: Transform[int, int] = double | add_10
 
 # Add retries/failure handling
-risky_node: Transform[int, int] = Transform(risky_transform)\
+risky_node:   Transform[int, int] = Transform(risky_transform)\
                                     .with_retry(RetryConfig(max_attempts=3, delay_ms=100))
 
 console_load: Load[int, None] = Load(lambda x: print(f"Result: {x}"))
