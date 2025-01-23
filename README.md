@@ -58,7 +58,7 @@ The base abstraction. All nodes, regardless of type, can be:
 - Grouped with `&` for parallel operations
 - Connected with `>>` to form pipelines
 
-Three semantic type aliases that help teams share a common language:
+3 semantic type aliases help you express the intent of your dataflows, but all nodes are just function wrappers:
 - `Extract[-In, +Out]`
 Conventionally used to start pipelines. Create parameter-less extracts that purely produce values like this: `Extract(lambda _: 5)`
 
