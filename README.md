@@ -10,11 +10,10 @@ A lightweight, zero-dependency library for writing beautiful ✨🍰, type-safe 
 
 ## Features
 - Type-safe pipelines with full mypy support
-- Zero-dependency: Drop etl4py.py into any Python project
+- Zero-dependency, single-file lib - drop **etl4py.py** into any project like a header file
 - Effortless task grouping with & operator
 - Built-in retry handling and error recovery
-- First-class pipeline composition with >>
-- Everything is just wrapped pure functions under the hood
+- Chain pipelines composition with >>
 
 ## Get started
 **etl4py** is on PyPi:
