@@ -42,6 +42,14 @@ Result: 20
 Saved to DB: 20
 ```
 
+## Features
+- Type-safe pipelines with full mypy support
+- Zero-dependency: Drop etl4py.py into any Python project
+- Effortless task grouping with & operator
+- Built-in retry handling and error recovery
+- First-class pipeline composition with >>
+- Everything is just wrapped pure functions under the hood
+
 ## Get started
 **etl4py** is on PyPi:
 ```
