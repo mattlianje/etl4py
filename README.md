@@ -78,22 +78,36 @@ keeping infrastructure concerns separate from your dataflows (Reader), and short
 ### Compose Nodes
 Use `|` to create reusable nodes:
 ```python
-def get_name(user_id: str) -> str:
-    return f"user_{user_id}"
-    
-def get_length(name: str) -> int:
-    return len(name)
+from etl4py import *
 
-# Compose nodes into a new node
-name_length = Transform(get_name) | Transform(get_length)
-result = name_length("123")  # Returns 8 (length of "user_123")
+def add_prefix(x: int) -> str:
+   return f"ID_{x}"
+
+def calculate_hash(s: str) -> int:
+   return hash(s)
+
+pipeline = Pipeline(
+   lambda x: (Transform(add_prefix) | Transform(calculate_hash))(x)
+) >> Load(lambda x: print(f"Hash: {x}"))
+
+pipeline.unsafe_run(42)  # Prints hash of "ID_42"
 ```
 
 ### Parallel Operations
 Use `&` to run operations (nodes or pipelines) in parallel:
 ```python
-stats = get_user_stats & get_user_posts  # Returns tuple of results
-pipeline = stats >> process_results
+from etl4py import *
+
+def save_to_db(x: int) -> str:
+   return f"Saved {x} to DB"
+   
+def notify_slack(x: int) -> str:
+   return f"Notified Slack about {x}"
+
+pipeline = Pipeline(
+   lambda x: (Load(save_to_db) & Load(notify_slack))(x * 2)
+)
+pipeline.unsafe_run(42)  # Returns: ("Saved 84 to DB", "Notified Slack about 84")
 ```
 
 ### Error/Retry Handling
