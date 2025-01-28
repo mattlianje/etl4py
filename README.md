@@ -82,11 +82,11 @@ Chain pipelines with `>>`
 ```python
 from etl4py import *
 
-double_then_add_5: Pipeline[int, int] = Transform(lambda x: x * 2) >> Transform(lambda x: x + 5)
-triple_then_sub_2: Pipeline[int, int] = Transform(lambda x: x * 3) >> Transform(lambda x: x - 2)
-console_load:      Load[int, None]    = Load(lambda x: print(f"Result: {x}"))
+pipeline_1:   Pipeline[int, int] = Transform(lambda x: x * 2) >> Transform(lambda x: x + 5)
+pipeline_2:   Pipeline[int, int] = Transform(lambda x: x * 3) >> Transform(lambda x: x - 2)
+console_load: Load[int, None]    = Load(lambda x: print(f"Result: {x}"))
 
-pipeline = double_then_add_5 >> triple_then_sub_2 >> console_load
+pipeline = pipeline_1 >> pipeline_2 >> console_load
 pipeline.unsafe_run(5)  # Result: 43
 ```
 
